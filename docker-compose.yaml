@@ -25,6 +25,14 @@ services:
         volumes:
             - ./sql-scripts/:/docker-entrypoint-initdb.d/ 
 
+        # networks:
+        #     docker-network:
+        #         aliases:
+        #             - alias_postgres
+        # ports:
+        #     - 5001:5001
+    
+
     localhost_flask:
         build:
             context: ./
