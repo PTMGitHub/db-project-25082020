@@ -1,0 +1,109 @@
+version: '3.1'
+services:
+    nginx:
+        image: nginx:latest
+        container_name: nginx_reverseproxy
+        depends_on:
+            - localhost_flask
+        #    - app2_flask1
+        #    - app2_flask2
+        #    - app2_flask3
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - docker-network
+        ports:
+            - 80:80
+
+    db:
+        image: postgres
+        restart: always
+        environment:
+            # - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=root
+            # - POSTGRES_DB=D_db
+        volumes:
+            - ./sql-scripts/:/docker-entrypoint-initdb.d/ 
+
+    localhost_flask:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        image: flask:v1
+        container_name: ContainerName_Localhost_webapp
+        
+        volumes:
+            - ./:/flask_code/
+        
+
+        command: python /flask_code/main.py
+
+        networks:
+            docker-network:
+                aliases:
+                    - alias_Localhost_webapp
+        ports:
+            - 8080:5000
+
+    # app2_flask1:
+    #     build:
+    #         context: ./
+    #         dockerfile: Dockerfile
+    #     image: flask:v1
+    #     container_name: ContainerName_app2_flask1
+                
+    #     volumes:
+    #         - ./:/flask_code/
+
+    #     command: python /flask_code/app2.py
+        
+    #     networks:
+    #         docker-network:
+    #             aliases:
+    #                 - alias_app2_flask1
+    #     ports:
+    #         - 6001:5000
+
+    # app2_flask2:
+    #     build:
+    #         context: ./
+    #         dockerfile: Dockerfile
+    #     image: flask:v1
+    #     container_name: ContainerName_app2_flask2
+                
+    #     volumes:
+    #         - ./:/flask_code/
+
+    #     command: python /flask_code/app2.py
+        
+    #     networks:
+    #         docker-network:
+    #             aliases:
+    #                 - alias_app2_flask2
+    #     ports:
+    #         - 6002:5000
+
+    # app2_flask3:
+    #     build:
+    #         context: ./
+    #         dockerfile: Dockerfile
+    #     image: flask:v1
+    #     container_name: ContainerName_app2_flask3
+                
+    #     volumes:
+    #         - ./:/flask_code/
+
+    #     command: python /flask_code/app2.py
+        
+    #     networks:
+    #         docker-network:
+    #             aliases:
+    #                 - alias_app2_flask3
+    #     ports:
+    #         - 6003:5000
+
+networks:
+    docker-network:
+        
+# volumes:
+#     postgres_data:
