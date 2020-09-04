@@ -7,5 +7,16 @@
   <body>
     <h1> My First Try Using Flask </h1>
     <p> Flask is Fun </p>
+
+    <div>
+      {% 
+      for movie_name in movies: 
+      %}
+        <div>Movie Name: {{movie_name}}</div>
+      {% 
+      endfor 
+      %}
+    </div>
+    
   </body>
 </html>

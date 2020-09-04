@@ -24,13 +24,14 @@ services:
             # - POSTGRES_DB=D_db
         volumes:
             - ./sql-scripts/:/docker-entrypoint-initdb.d/ 
-
-        # networks:
-        #     docker-network:
-        #         aliases:
-        #             - alias_postgres
-        # ports:
-        #     - 5001:5001
+            - ./pg-data/:/var/lib/postgresql/data
+        networks:
+            docker-network:
+                aliases:
+                    - alias_postgres
+        
+        ports:
+            - 5432:5432
     
 
     localhost_flask:
@@ -44,7 +45,7 @@ services:
             - ./:/flask_code/
         
 
-        command: python /flask_code/main.py
+        command: python3 /flask_code/main.py
 
         networks:
             docker-network:
@@ -112,6 +113,6 @@ services:
 
 networks:
     docker-network:
-        
+
 # volumes:
 #     postgres_data:
